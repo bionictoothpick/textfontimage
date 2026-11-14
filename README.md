@@ -19,6 +19,37 @@ To add a font, copy a `.ttf` or `.otf` file into one of those folders and restar
 
 This fork also gives `text_input_second_row` and `local_font_path` empty defaults, so the nodes run on InvokeAI 6.x without connecting those fields.
 
+### Example workflows (this fork)
+
+The [`workflows`](workflows) folder has two ready-made workflows. In InvokeAI, open **Workflows**, choose **Load from File** and pick a `.json` file.
+
+**[Word Made of Leaves.json](workflows/Word%20Made%20of%20Leaves.json)** makes your word out of a material inside a full scene, for example LEAF made of leaves on a forest floor.
+
+![Word Made of Leaves example](workflows/examples/word_made_of_leaves.png)
+
+**[Word Made of Leaves - Transparent.json](workflows/Word%20Made%20of%20Leaves%20-%20Transparent.json)** makes the same image, then keeps only the letters. Everything outside the letter shapes is made transparent and the result is cropped to the word. The output is a transparent PNG, ready for logos, overlays and slides.
+
+![Word Made of Leaves - Transparent example](workflows/examples/word_made_of_leaves_transparent.png)
+
+How they work: Text Font to Image renders your word as white letters on black. The QRCode Monster ControlNet uses that image to guide an SD1.5 model, so the material forms the letters. The transparent version then turns the same letter image into a mask, applies it as the alpha channel and crops to the letters.
+
+Fields you will change most:
+
+| Field | Description |
+| ----- | ----------- |
+| 1. Your Word / Text Input | The word to make |
+| Local Font | Font from the dropdown (default Arial Black). Bold, heavy fonts work best |
+| 2. What the word is made of | The material, e.g. leaves, stones, flowers, wood grain. Describe the material only; mentioning "letters" tends to give plain solid letters |
+| 3. Word strength / Control Weight | Default 1.15. Raise it (1.3 to 1.4) if the word is hard to read; lower it (about 1.0) for a more natural look |
+
+Requirements:
+
+* This node pack
+* An SD1.5 model (the workflows were made with DreamShaper 8)
+* The **QRCode Monster v2 (SD1.5)** ControlNet, available in InvokeAI's Model Manager under Starter Models
+
+The model and font selections were saved on one install, so after loading a workflow, re-select the SD1.5 model, the ControlNet and the font if they show as missing.
+
 Text Font to Image Node
 
 | Fields                  | Description                                            |

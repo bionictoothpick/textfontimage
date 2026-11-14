@@ -1,0 +1,601 @@
+{
+  "name": "Word Made of Leaves (Text Font + QR Monster, SD1.5)",
+  "author": "bionictoothpick",
+  "contact": "",
+  "version": "1.0.0",
+  "tags": "text, font, controlnet, sd1.5",
+  "description": "Makes your word out of a material inside a full scene (e.g. LEAF made of leaves on a forest floor). Type a word (1. Your Word), pick a font, describe the material (2. prompt) and press Invoke. Raise the ControlNet weight (3.) if the word is hard to read; lower it for a more natural look. Needs the Text Font to Image node, an SD1.5 model and the QRCode Monster v2 ControlNet.",
+  "notes": "",
+  "meta": {
+    "version": "3.0.0",
+    "category": "user"
+  },
+  "exposedFields": [
+    {
+      "nodeId": "text_font",
+      "fieldName": "text_input"
+    },
+    {
+      "nodeId": "text_font",
+      "fieldName": "local_font"
+    },
+    {
+      "nodeId": "pos",
+      "fieldName": "prompt"
+    },
+    {
+      "nodeId": "neg",
+      "fieldName": "prompt"
+    },
+    {
+      "nodeId": "control",
+      "fieldName": "control_weight"
+    },
+    {
+      "nodeId": "denoise",
+      "fieldName": "steps"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "text_font",
+      "type": "invocation",
+      "data": {
+        "id": "text_font",
+        "version": "1.3.6",
+        "nodePack": "textfontimage",
+        "label": "1. Your Word",
+        "notes": "",
+        "type": "Text_Font_to_Image",
+        "inputs": {
+          "text_input": {
+            "name": "text_input",
+            "label": "",
+            "value": "LEAF"
+          },
+          "text_input_second_row": {
+            "name": "text_input_second_row",
+            "label": "",
+            "value": ""
+          },
+          "second_row_font_size": {
+            "name": "second_row_font_size",
+            "label": "",
+            "value": 35
+          },
+          "font_url": {
+            "name": "font_url",
+            "label": "",
+            "value": "https://www.1001fonts.com/download/font/caliban.medium.ttf"
+          },
+          "local_font_path": {
+            "name": "local_font_path",
+            "label": "",
+            "value": ""
+          },
+          "local_font": {
+            "name": "local_font",
+            "label": "",
+            "value": "Arial Black"
+          },
+          "image_width": {
+            "name": "image_width",
+            "label": "",
+            "value": 768
+          },
+          "image_height": {
+            "name": "image_height",
+            "label": "",
+            "value": 512
+          },
+          "padding": {
+            "name": "padding",
+            "label": "",
+            "value": 70
+          },
+          "row_gap": {
+            "name": "row_gap",
+            "label": "",
+            "value": 50
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": false
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "model",
+      "type": "invocation",
+      "data": {
+        "id": "model",
+        "version": "1.0.4",
+        "nodePack": "invokeai",
+        "label": "Model (SD1.5)",
+        "notes": "",
+        "type": "main_model_loader",
+        "inputs": {
+          "model": {
+            "name": "model",
+            "label": "",
+            "value": {
+              "key": "f599c2cf-f217-467e-b217-860a17233e86",
+              "hash": "blake3:da55e305d88347119564c40ef9c778dd3df9b1f4620956f983a1f72862a37dfc",
+              "name": "Dreamshaper 8",
+              "base": "sd-1",
+              "type": "main"
+            }
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": true
+      },
+      "position": {
+        "x": 0,
+        "y": 520
+      }
+    },
+    {
+      "id": "pos",
+      "type": "invocation",
+      "data": {
+        "id": "pos",
+        "version": "1.2.1",
+        "nodePack": "invokeai",
+        "label": "2. What the word is made of",
+        "notes": "",
+        "type": "compel",
+        "inputs": {
+          "prompt": {
+            "name": "prompt",
+            "label": "",
+            "value": "lush green and golden autumn leaves densely piled together, detailed leaf texture, forest floor, soft natural light, macro photography, highly detailed"
+          },
+          "clip": {
+            "name": "clip",
+            "label": "",
+            "value": null
+          },
+          "mask": {
+            "name": "mask",
+            "label": "",
+            "value": null
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": true
+      },
+      "position": {
+        "x": 420,
+        "y": 420
+      }
+    },
+    {
+      "id": "neg",
+      "type": "invocation",
+      "data": {
+        "id": "neg",
+        "version": "1.2.1",
+        "nodePack": "invokeai",
+        "label": "Negative prompt",
+        "notes": "",
+        "type": "compel",
+        "inputs": {
+          "prompt": {
+            "name": "prompt",
+            "label": "",
+            "value": "blurry, lowres, low quality, deformed, watermark, signature, flat, cartoon"
+          },
+          "clip": {
+            "name": "clip",
+            "label": "",
+            "value": null
+          },
+          "mask": {
+            "name": "mask",
+            "label": "",
+            "value": null
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": true
+      },
+      "position": {
+        "x": 420,
+        "y": 720
+      }
+    },
+    {
+      "id": "control",
+      "type": "invocation",
+      "data": {
+        "id": "control",
+        "version": "1.1.3",
+        "nodePack": "invokeai",
+        "label": "3. Word strength (control_weight)",
+        "notes": "",
+        "type": "controlnet",
+        "inputs": {
+          "image": {
+            "name": "image",
+            "label": "",
+            "value": null
+          },
+          "control_model": {
+            "name": "control_model",
+            "label": "",
+            "value": {
+              "key": "031c5a08-c613-4b46-82ce-ba7c6974f62e",
+              "hash": "blake3:a1b76345685d9553643551299e1271f22d540be521dd5afa4135dfa18b9024e6",
+              "name": "control_v1p_sd15_qrcode_monster_v2",
+              "base": "sd-1",
+              "type": "controlnet"
+            }
+          },
+          "control_weight": {
+            "name": "control_weight",
+            "label": "",
+            "value": 1.15
+          },
+          "begin_step_percent": {
+            "name": "begin_step_percent",
+            "label": "",
+            "value": 0
+          },
+          "end_step_percent": {
+            "name": "end_step_percent",
+            "label": "",
+            "value": 0.8
+          },
+          "control_mode": {
+            "name": "control_mode",
+            "label": "",
+            "value": "balanced"
+          },
+          "resize_mode": {
+            "name": "resize_mode",
+            "label": "",
+            "value": "just_resize"
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": true
+      },
+      "position": {
+        "x": 420,
+        "y": 0
+      }
+    },
+    {
+      "id": "seed",
+      "type": "invocation",
+      "data": {
+        "id": "seed",
+        "version": "1.0.1",
+        "nodePack": "invokeai",
+        "label": "Random seed",
+        "notes": "",
+        "type": "rand_int",
+        "inputs": {
+          "low": {
+            "name": "low",
+            "label": "",
+            "value": 0
+          },
+          "high": {
+            "name": "high",
+            "label": "",
+            "value": 2147483647
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": false
+      },
+      "position": {
+        "x": 420,
+        "y": 1000
+      }
+    },
+    {
+      "id": "noise",
+      "type": "invocation",
+      "data": {
+        "id": "noise",
+        "version": "1.1.0",
+        "nodePack": "invokeai",
+        "label": "",
+        "notes": "",
+        "type": "noise",
+        "inputs": {
+          "noise_type": {
+            "name": "noise_type",
+            "label": "",
+            "value": "SD"
+          },
+          "seed": {
+            "name": "seed",
+            "label": "",
+            "value": 0
+          },
+          "width": {
+            "name": "width",
+            "label": "",
+            "value": 768
+          },
+          "height": {
+            "name": "height",
+            "label": "",
+            "value": 512
+          },
+          "use_cpu": {
+            "name": "use_cpu",
+            "label": "",
+            "value": true
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": true
+      },
+      "position": {
+        "x": 840,
+        "y": 1000
+      }
+    },
+    {
+      "id": "denoise",
+      "type": "invocation",
+      "data": {
+        "id": "denoise",
+        "version": "1.6.0",
+        "nodePack": "invokeai",
+        "label": "",
+        "notes": "",
+        "type": "denoise_latents",
+        "inputs": {
+          "positive_conditioning": {
+            "name": "positive_conditioning",
+            "label": ""
+          },
+          "negative_conditioning": {
+            "name": "negative_conditioning",
+            "label": ""
+          },
+          "noise": {
+            "name": "noise",
+            "label": ""
+          },
+          "steps": {
+            "name": "steps",
+            "label": "",
+            "value": 30
+          },
+          "cfg_scale": {
+            "name": "cfg_scale",
+            "label": "",
+            "value": 7
+          },
+          "denoising_start": {
+            "name": "denoising_start",
+            "label": "",
+            "value": 0
+          },
+          "denoising_end": {
+            "name": "denoising_end",
+            "label": "",
+            "value": 1
+          },
+          "scheduler": {
+            "name": "scheduler",
+            "label": "",
+            "value": "dpmpp_2m_k"
+          },
+          "unet": {
+            "name": "unet",
+            "label": ""
+          },
+          "control": {
+            "name": "control",
+            "label": ""
+          },
+          "ip_adapter": {
+            "name": "ip_adapter",
+            "label": ""
+          },
+          "t2i_adapter": {
+            "name": "t2i_adapter",
+            "label": ""
+          },
+          "cfg_rescale_multiplier": {
+            "name": "cfg_rescale_multiplier",
+            "label": "",
+            "value": 0
+          },
+          "hidiffusion": {
+            "name": "hidiffusion",
+            "label": "",
+            "value": false
+          },
+          "hidiffusion_raunet": {
+            "name": "hidiffusion_raunet",
+            "label": "",
+            "value": true
+          },
+          "hidiffusion_window_attn": {
+            "name": "hidiffusion_window_attn",
+            "label": "",
+            "value": true
+          },
+          "hidiffusion_t1_ratio": {
+            "name": "hidiffusion_t1_ratio",
+            "label": "",
+            "value": 0.4
+          },
+          "hidiffusion_t2_ratio": {
+            "name": "hidiffusion_t2_ratio",
+            "label": "",
+            "value": 0.0
+          },
+          "latents": {
+            "name": "latents",
+            "label": ""
+          },
+          "denoise_mask": {
+            "name": "denoise_mask",
+            "label": ""
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": true,
+        "useCache": true
+      },
+      "position": {
+        "x": 840,
+        "y": 300
+      }
+    },
+    {
+      "id": "decode",
+      "type": "invocation",
+      "data": {
+        "id": "decode",
+        "version": "1.3.2",
+        "nodePack": "invokeai",
+        "label": "Output",
+        "notes": "",
+        "type": "l2i",
+        "inputs": {
+          "latents": {
+            "name": "latents",
+            "label": ""
+          },
+          "vae": {
+            "name": "vae",
+            "label": ""
+          },
+          "tiled": {
+            "name": "tiled",
+            "label": "",
+            "value": false
+          },
+          "tile_size": {
+            "name": "tile_size",
+            "label": "",
+            "value": 0
+          },
+          "fp32": {
+            "name": "fp32",
+            "label": "",
+            "value": false
+          }
+        },
+        "isOpen": true,
+        "isIntermediate": false,
+        "useCache": true
+      },
+      "position": {
+        "x": 1260,
+        "y": 300
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "reactflow__edge-text_fontimage-controlimage",
+      "type": "default",
+      "source": "text_font",
+      "target": "control",
+      "sourceHandle": "image",
+      "targetHandle": "image"
+    },
+    {
+      "id": "reactflow__edge-modelunet-denoiseunet",
+      "type": "default",
+      "source": "model",
+      "target": "denoise",
+      "sourceHandle": "unet",
+      "targetHandle": "unet"
+    },
+    {
+      "id": "reactflow__edge-modelclip-posclip",
+      "type": "default",
+      "source": "model",
+      "target": "pos",
+      "sourceHandle": "clip",
+      "targetHandle": "clip"
+    },
+    {
+      "id": "reactflow__edge-modelclip-negclip",
+      "type": "default",
+      "source": "model",
+      "target": "neg",
+      "sourceHandle": "clip",
+      "targetHandle": "clip"
+    },
+    {
+      "id": "reactflow__edge-modelvae-decodevae",
+      "type": "default",
+      "source": "model",
+      "target": "decode",
+      "sourceHandle": "vae",
+      "targetHandle": "vae"
+    },
+    {
+      "id": "reactflow__edge-posconditioning-denoisepositive_conditioning",
+      "type": "default",
+      "source": "pos",
+      "target": "denoise",
+      "sourceHandle": "conditioning",
+      "targetHandle": "positive_conditioning"
+    },
+    {
+      "id": "reactflow__edge-negconditioning-denoisenegative_conditioning",
+      "type": "default",
+      "source": "neg",
+      "target": "denoise",
+      "sourceHandle": "conditioning",
+      "targetHandle": "negative_conditioning"
+    },
+    {
+      "id": "reactflow__edge-controlcontrol-denoisecontrol",
+      "type": "default",
+      "source": "control",
+      "target": "denoise",
+      "sourceHandle": "control",
+      "targetHandle": "control"
+    },
+    {
+      "id": "reactflow__edge-seedvalue-noiseseed",
+      "type": "default",
+      "source": "seed",
+      "target": "noise",
+      "sourceHandle": "value",
+      "targetHandle": "seed"
+    },
+    {
+      "id": "reactflow__edge-noisenoise-denoisenoise",
+      "type": "default",
+      "source": "noise",
+      "target": "denoise",
+      "sourceHandle": "noise",
+      "targetHandle": "noise"
+    },
+    {
+      "id": "reactflow__edge-denoiselatents-decodelatents",
+      "type": "default",
+      "source": "denoise",
+      "target": "decode",
+      "sourceHandle": "latents",
+      "targetHandle": "latents"
+    }
+  ]
+}
