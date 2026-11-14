@@ -13,25 +13,9 @@ from invokeai.invocation_api import (
     ImageOutput,
 )
 
-cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "font_cache")
+from .font_sources import FontLiteral, NODE_FONT_CACHE, resolve_font
 
-os.makedirs(cache_dir, exist_ok=True)
-
-
-def list_local_fonts() -> list:
-    if not os.path.exists(cache_dir):
-        return []
-    fonts = [f for f in os.listdir(cache_dir) if f.lower().endswith((".ttf", ".otf"))]
-    return sorted(fonts, key=lambda x: x.lower())
-
-
-available_fonts = list_local_fonts()
-
-if available_fonts:
-    fonts_str = ", ".join([repr(f) for f in available_fonts])
-    FontLiteral = eval(f'Literal["None", {fonts_str}]')
-else:
-    FontLiteral = Literal["None"]
+cache_dir = str(NODE_FONT_CACHE)
 
 
 @invocation(
@@ -49,7 +33,7 @@ class TextfontimageInvocation(BaseInvocation):
         default="Invoke AI", description="The text from which to generate an image"
     )
     text_input_second_row: Optional[str] = InputField(
-        description="The second row of text to add below the first text"
+        default="", description="The second row of text to add below the first text"
     )
     second_row_font_size: Optional[int] = InputField(
         default=35, description="Font size for the second row of text (optional)"
@@ -59,11 +43,11 @@ class TextfontimageInvocation(BaseInvocation):
         description="URL address of the font file to download",
     )
     local_font_path: Optional[str] = InputField(
-        description="Local font file path (overrides font_url)"
+        default="", description="Local font file path (overrides font_url)"
     )
     local_font: FontLiteral = InputField(
         default="None",
-        description="Name of the local font file to use from the font_cache folder",
+        description="Font to use: fonts in InvokeAI's fonts folder, the node's font_cache folder, and installed system fonts (restart InvokeAI after adding fonts)",
     )
     image_width: int = InputField(default=1024, description="Width of the output image")
     image_height: int = InputField(
@@ -201,7 +185,7 @@ class TextfontimageInvocation(BaseInvocation):
         if not self.text_input:
             raise ValueError("Text input is required.")
         if self.local_font and self.local_font != "None":
-            font_path = os.path.join("font_cache", self.local_font)
+            font_path = resolve_font(self.local_font) or ""
         elif self.local_font_path:
             font_path = self.local_font_path
         else:

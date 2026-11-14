@@ -7,6 +7,18 @@ text font to text image node for InvokeAI, download a font to use (or if in font
 * more advanced node advtextfontimage.py (gives you alot more control over text size and location)
 * extrude node made by lillekemiker (keeping upto date here)
 
+### Font dropdown (this fork)
+
+The `local_font` dropdown lists fonts by name from:
+
+* InvokeAI's fonts folder (`<invokeai root>/fonts`, set by `fonts_dir` in `invokeai.yaml`), including subfolders
+* this node's `font_cache` folder
+* installed system fonts (Windows: `C:\Windows\Fonts` and per-user fonts; Linux/macOS: the usual font folders)
+
+To add a font, copy a `.ttf` or `.otf` file into one of those folders and restart InvokeAI. The list is built at startup.
+
+This fork also gives `text_input_second_row` and `local_font_path` empty defaults, so the nodes run on InvokeAI 6.x without connecting those fields.
+
 Text Font to Image Node
 
 | Fields                  | Description                                            |
@@ -16,7 +28,7 @@ Text Font to Image Node
 | second_row_font_size     | Font size for the second row of text (optional)        |
 | font_url                | URL address of the font file to download               |
 | local_font_path         | Local font file path (overrides font_url)              |
-| local_font              | Name of the local font file to use from the font_cache folder |
+| local_font              | Font dropdown: InvokeAI's fonts folder, the node's font_cache folder and installed system fonts (overrides local_font_path and font_url) |
 | image_width              | Width of the output image                              |
 | image_height             | Height of the output image                             |
 | padding                  | Padding around the text in pixels                       |
@@ -30,7 +42,7 @@ Advanced Text Font to Image Node
 | text_input_second_row    | The second row of text to add below the first text     |
 | font_url                | URL address of the font file to download               |
 | local_font_path         | Local font file path (overrides font_url)              |
-| local_font              | Name of the local font file to use from the font_cache folder |
+| local_font              | Font dropdown: InvokeAI's fonts folder, the node's font_cache folder and installed system fonts (overrides local_font_path and font_url) |
 | image_width              | Width of the output image                              |
 | image_height             | Height of the output image                             |
 | font_color_first         | Font color for the first row of text in HEX format     |
